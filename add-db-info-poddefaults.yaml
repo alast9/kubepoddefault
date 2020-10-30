@@ -1,0 +1,29 @@
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: add-database-info
+  namespace: kubeflow-vinay
+spec:
+  desc: my database credentials and configs
+  selector:
+    matchLabels:
+      add-database-info: "true"
+  env:
+  - name: DB_ROOT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-root-password
+        key: password
+  envFrom:
+  - secretRef:
+      name: db-user-creds
+  volumeMounts:
+  - mountPath: /etc/db/conf.d
+    name: db-config-volume
+  volumes:
+  - configMap:
+      name: db-config
+      items:
+        - key: max_allowed_packet.cnf
+          path: max_allowed_packet.cnf
+    name: db-config-volume

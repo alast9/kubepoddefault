@@ -1,0 +1,7 @@
+echo -n 'rootvinay' | base64
+cm9vdHZpbmF5
+
+kubectl create -n kubeflow-vinay secret generic db-user-creds --from-literal=DB_USER=uservinay --from-literal=DB_PASSWORD=passvinay
+kubectl apply -n kubeflow-vinay -f db-root-secret.yaml
+kubectl create -n kubeflow-vinay configmap db-config --from-file=max_allowed_packet.cnf
+kubectl apply -f kubeflow-poddefaults.yaml
